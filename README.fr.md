@@ -19,11 +19,11 @@ publié, et vous prévient quand une mise à jour ou une nouvelle application ar
 
 ```powershell
 # Windows
-irm https://craftdepot.github.io/CraftDepot-App/install.ps1 | iex
+irm https://craftdepot.app/install.ps1 | iex
 ```
 ```sh
 # macOS and Linux
-curl -fsSL https://craftdepot.github.io/CraftDepot-App/install.sh | sh
+curl -fsSL https://craftdepot.app/install.sh | sh
 ```
 
 Le script télécharge la dernière version pour votre système depuis
@@ -97,7 +97,7 @@ Les README dans d'autres langues sont des traductions du README anglais, qui fai
 
 La liste des applications n'est pas intégrée au lanceur. Elle vient de
 [`catalog/catalog.json`](catalog/catalog.json) dans ce dépôt, publié à l'adresse
-`https://craftdepot.github.io/CraftDepot-App/catalog.json` chaque fois qu'il change sur `main`. Le lanceur
+`https://craftdepot.app/catalog.json` chaque fois qu'il change sur `main`. Le lanceur
 et le site web le lisent tous les deux. Le lanceur le récupère :
 
 - au démarrage, en envoyant le dernier ETag, si bien qu'un catalogue inchangé ne coûte qu'une toute petite requête ;
@@ -117,7 +117,7 @@ ligne. Quand le catalogue change :
 
 **Les versions viennent d'un seul fichier, pas de l'API de GitHub.** Toutes les heures, le workflow du
 catalogue rassemble la dernière version de chaque application (fichiers et SHA-256), ses étoiles et sa
-licence dans `https://craftdepot.github.io/CraftDepot-App/releases.json`. Le lanceur récupère ce fichier avec
+licence dans `https://craftdepot.app/releases.json`. Le lanceur récupère ce fichier avec
 un ETag en même temps que le catalogue : vérifier les mises à jour de toutes les applications ne coûte
 donc qu'une requête, quelle que soit la taille du catalogue, et personne n'atteint la limite de GitHub
 de 60 requêtes d'API par heure. Seule une application que l'index ne couvre pas encore (dans un
@@ -304,7 +304,7 @@ Tous les détails se trouvent dans [Privacy_Statement.md](Privacy_Statement.md).
 
 Une version compilée depuis les sources n'a ni l'un ni l'autre (voir
 [telemetry/README.md](telemetry/README.md)). Pour le reste, CraftDepot ne se connecte que pour
-récupérer les informations de version depuis `craftdepot.github.io` et `api.github.com`, les icônes
+récupérer les informations de version depuis `craftdepot.app` et `api.github.com`, les icônes
 d'applications que liste le catalogue, et les fichiers de version que vous choisissez d'installer
 depuis `github.com`. Ces services voient votre adresse IP, comme pour toute requête web.
 

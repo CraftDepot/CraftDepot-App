@@ -18,11 +18,11 @@ com o SHA-256 publicado e avisa quando há uma atualização ou um app novo no c
 
 ```powershell
 # Windows
-irm https://craftdepot.github.io/CraftDepot-App/install.ps1 | iex
+irm https://craftdepot.app/install.ps1 | iex
 ```
 ```sh
 # macOS and Linux
-curl -fsSL https://craftdepot.github.io/CraftDepot-App/install.sh | sh
+curl -fsSL https://craftdepot.app/install.sh | sh
 ```
 
 O script baixa a versão mais recente para o seu sistema em
@@ -93,7 +93,7 @@ Os READMEs em outros idiomas são traduções do README em inglês, que é a ref
 
 A lista de apps não fica embutida no inicializador. Ela vem de
 [`catalog/catalog.json`](catalog/catalog.json) neste repositório, que é publicado em
-`https://craftdepot.github.io/CraftDepot-App/catalog.json` sempre que muda na `main`. Tanto o
+`https://craftdepot.app/catalog.json` sempre que muda na `main`. Tanto o
 inicializador quanto o site o leem. O inicializador o busca:
 
 - ao iniciar, enviando o último ETag, para que um catálogo sem mudanças custe uma única solicitação minúscula;
@@ -112,7 +112,7 @@ Ele guarda a última cópia válida, então abre na hora e funciona offline. Qua
 
 **As versões vêm de um único arquivo, não da API do GitHub.** A cada hora, o workflow do catálogo
 reúne a versão mais recente de cada app (arquivos e SHA-256), as estrelas e a licença em
-`https://craftdepot.github.io/CraftDepot-App/releases.json`. O inicializador busca esse arquivo com um ETag
+`https://craftdepot.app/releases.json`. O inicializador busca esse arquivo com um ETag
 junto com o catálogo, então verificar atualizações de todos os apps custa uma solicitação, por maior
 que o catálogo fique, e ninguém esbarra no limite do GitHub de 60 solicitações de API por hora. Só um
 app que o índice ainda não cobre (um catálogo local em teste, por exemplo) é consultado diretamente
@@ -290,7 +290,7 @@ Todos os detalhes estão em [Privacy_Statement.md](Privacy_Statement.md). Em res
 
 Uma build compilada a partir do código-fonte não tem nenhuma das duas (veja
 [telemetry/README.md](telemetry/README.md)). Fora isso, o CraftDepot só se conecta para buscar
-informações de versões em `craftdepot.github.io` e `api.github.com`, os ícones dos apps listados no
+informações de versões em `craftdepot.app` e `api.github.com`, os ícones dos apps listados no
 catálogo e os arquivos de release que você escolhe instalar de `github.com`. Esses serviços veem seu
 endereço IP, como em qualquer solicitação na web.
 

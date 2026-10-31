@@ -36,7 +36,7 @@ jobs:
       - name: Lint the shell scripts
         run: shellcheck installer/install.sh scripts/dist.sh
 
-  # Publishes to https://craftdepot.github.io/CraftDepot-App/: catalog.json (with featured.json merged in),
+  # Publishes to https://craftdepot.app/: catalog.json (with featured.json merged in),
   # which every launcher polls; releases.json, every app's latest release and stars; the install
   # scripts; and the website, built from those files out of the private CraftDepot-Site repository.
   deploy:

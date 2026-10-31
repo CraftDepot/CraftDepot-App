@@ -19,11 +19,11 @@ RustDesk। CraftDepot एक छोटा नेटिव ऐप है (Rust �
 
 ```powershell
 # Windows
-irm https://craftdepot.github.io/CraftDepot-App/install.ps1 | iex
+irm https://craftdepot.app/install.ps1 | iex
 ```
 ```sh
 # macOS and Linux
-curl -fsSL https://craftdepot.github.io/CraftDepot-App/install.sh | sh
+curl -fsSL https://craftdepot.app/install.sh | sh
 ```
 
 स्क्रिप्ट आपके सिस्टम के लिए नवीनतम रिलीज़ [Releases](https://github.com/CraftDepot/CraftDepot-App/releases)
@@ -91,7 +91,7 @@ macOS पर PingFang या Hiragino, Kohinoor और SF Arabic या Geeza Pr
 
 ऐप्स की सूची लॉन्चर में बिल्ट-इन नहीं है। यह इस रिपॉज़िटरी की
 [`catalog/catalog.json`](catalog/catalog.json) से आती है, जो `main` पर बदलने पर हर बार
-`https://craftdepot.github.io/CraftDepot-App/catalog.json` पर प्रकाशित होती है। लॉन्चर और वेबसाइट दोनों इसे पढ़ते
+`https://craftdepot.app/catalog.json` पर प्रकाशित होती है। लॉन्चर और वेबसाइट दोनों इसे पढ़ते
 हैं। लॉन्चर इसे लाता है:
 
 - शुरू होने पर, आख़िरी ETag भेजकर, ताकि बिना बदले कैटलॉग पर बस एक छोटा-सा अनुरोध लगे;
@@ -109,7 +109,7 @@ macOS पर PingFang या Hiragino, Kohinoor और SF Arabic या Geeza Pr
 | कोई ऐप `featured.json` में सूचीबद्ध है | वह डिफ़ॉल्ट "विशेष" क्रम में सबसे आगे रहता है, विशेष बैज के साथ |
 
 **रिलीज़ एक फ़ाइल से आती हैं, GitHub की API से नहीं।** हर घंटे कैटलॉग वर्कफ़्लो हर ऐप की नवीनतम रिलीज़
-(फ़ाइलें और SHA-256), स्टार और लाइसेंस को `https://craftdepot.github.io/CraftDepot-App/releases.json` में इकट्ठा करता
+(फ़ाइलें और SHA-256), स्टार और लाइसेंस को `https://craftdepot.app/releases.json` में इकट्ठा करता
 है। लॉन्चर इसे कैटलॉग के साथ ETag के ज़रिए लाता है, इसलिए हर ऐप के अपडेट जाँचने में बस एक अनुरोध लगता है,
 कैटलॉग चाहे जितना लंबा हो जाए, और कोई भी GitHub की 60 API अनुरोध प्रति घंटा की सीमा तक नहीं पहुँचता। सिर्फ़
 वह ऐप जिसे इंडेक्स अभी कवर नहीं करता (मान लीजिए टेस्ट किया जा रहा कोई लोकल कैटलॉग), सीधे GitHub पर देखा
@@ -281,7 +281,7 @@ zips प्रकाशित होने से पहले हर सिग�
   आता है।
 
 सोर्स से बने बिल्ड में इनमें से कुछ भी नहीं होता (देखें [telemetry/README.md](telemetry/README.md))। इसके
-अलावा CraftDepot सिर्फ़ `craftdepot.github.io` और `api.github.com` से रिलीज़ की जानकारी, कैटलॉग में सूचीबद्ध ऐप
+अलावा CraftDepot सिर्फ़ `craftdepot.app` और `api.github.com` से रिलीज़ की जानकारी, कैटलॉग में सूचीबद्ध ऐप
 आइकन, और `github.com` से वे रिलीज़ फ़ाइलें लाने के लिए कनेक्ट होता है जिन्हें आप इंस्टॉल करना चुनते हैं। किसी
 भी वेब अनुरोध की तरह, ये सेवाएँ आपका IP पता देखती हैं।
 

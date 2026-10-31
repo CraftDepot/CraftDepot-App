@@ -85,7 +85,7 @@ to be updated.
 | `catalog/releases.mjs` | Builds `releases.json`: every app's latest release (files and SHA-256s), stars and license |
 | `catalog/check.mjs` | The check run on pull requests and daily |
 
-Merging to `main` publishes to `https://craftdepot.github.io/CraftDepot-App/`. `releases.json` is also
+Merging to `main` publishes to `https://craftdepot.app/`. `releases.json` is also
 rebuilt every hour, so launchers learn about new releases from that one file instead of each
 asking GitHub about every app.
 

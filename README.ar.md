@@ -22,11 +22,11 @@ PhotoCraft بدلًا من Photoshop، وGridCraft بدلًا من Excel، وBIM
 
 ```powershell
 # Windows
-irm https://craftdepot.github.io/CraftDepot-App/install.ps1 | iex
+irm https://craftdepot.app/install.ps1 | iex
 ```
 ```sh
 # macOS and Linux
-curl -fsSL https://craftdepot.github.io/CraftDepot-App/install.sh | sh
+curl -fsSL https://craftdepot.app/install.sh | sh
 ```
 
 <div dir="rtl">
@@ -96,7 +96,7 @@ Español، 中文（简体）، हिन्दी، العربية، বাং�
 
 قائمة التطبيقات ليست مضمّنة في المشغّل. بل تأتي من
 [`catalog/catalog.json`](catalog/catalog.json) في هذا المستودع، والذي يُنشر على
-`https://craftdepot.github.io/CraftDepot-App/catalog.json` كلما تغيّر على `main`. ويقرؤه كل من
+`https://craftdepot.app/catalog.json` كلما تغيّر على `main`. ويقرؤه كل من
 المشغّل وموقع الويب. ويجلبه المشغّل:
 
 - عند بدء التشغيل، مرسلًا آخر ETag بحيث لا يكلّف الكتالوج غير المتغيّر سوى طلب صغير واحد؛
@@ -115,7 +115,7 @@ Español، 中文（简体）، हिन्दी، العربية، বাং�
 
 **تأتي الإصدارات من ملف واحد، لا من واجهة GitHub البرمجية.** كل ساعة، يجمع سير عمل الكتالوج
 أحدث إصدار لكل تطبيق (الملفات وقيم SHA-256 الخاصة بها)، وعدد النجوم والترخيص في
-`https://craftdepot.github.io/CraftDepot-App/releases.json`. ويجلب المشغّل هذا الملف مع ETag إلى جانب
+`https://craftdepot.app/releases.json`. ويجلب المشغّل هذا الملف مع ETag إلى جانب
 الكتالوج، فلا يكلّف التحقق من تحديثات كل التطبيقات سوى طلب واحد، مهما طال الكتالوج،
 ولا يصطدم أحد بحد GitHub البالغ 60 طلبًا للواجهة البرمجية في الساعة. ولا يُبحث مباشرةً على GitHub إلا عن التطبيق الذي لا يغطيه
 الفهرس بعد (ككتالوج محلي قيد الاختبار مثلًا). وتُستخدم النجوم وتواريخ الإصدارات
@@ -295,7 +295,7 @@ x86_64 وArm، ويتحقق من كل توقيع وطابع زمني قبل نش
   مباشرةً من GitHub Pages.
 
 الإصدار المبني من المصدر لا يتضمن أيًا منهما (راجع [telemetry/README.md](telemetry/README.md)). وفيما عدا ذلك
-لا يتصل CraftDepot إلا لجلب معلومات الإصدارات من `craftdepot.github.io` و`api.github.com`،
+لا يتصل CraftDepot إلا لجلب معلومات الإصدارات من `craftdepot.app` و`api.github.com`،
 وأيقونات التطبيقات التي يسردها الكتالوج، وملفات الإصدارات التي تختار تثبيتها من `github.com`.
 وترى هذه الخدمات عنوان IP الخاص بك، كما في أي طلب ويب.
 

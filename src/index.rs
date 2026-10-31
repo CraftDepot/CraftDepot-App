@@ -93,7 +93,7 @@ mod tests {
 
     #[test]
     fn finds_the_index_beside_the_catalog() {
-        assert_eq!(source("https://craftdepot.github.io/CraftDepot-App/catalog.json"), "https://craftdepot.github.io/CraftDepot-App/releases.json");
+        assert_eq!(source("https://craftdepot.app/catalog.json"), "https://craftdepot.app/releases.json");
         assert_eq!(source("catalog\\catalog.json"), "catalog\\releases.json");
         assert_eq!(source("catalog.json"), "releases.json");
     }

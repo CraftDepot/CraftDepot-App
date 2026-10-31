@@ -18,11 +18,11 @@
 
 ```powershell
 # Windows
-irm https://craftdepot.github.io/CraftDepot-App/install.ps1 | iex
+irm https://craftdepot.app/install.ps1 | iex
 ```
 ```sh
 # macOS and Linux
-curl -fsSL https://craftdepot.github.io/CraftDepot-App/install.sh | sh
+curl -fsSL https://craftdepot.app/install.sh | sh
 ```
 
 该脚本会从 [Releases](https://github.com/CraftDepot/CraftDepot-App/releases) 下载适用于你系统的最新版本，
@@ -81,7 +81,7 @@ Windows 上为 Microsoft YaHei、Nirmala UI 和 Segoe UI；macOS 上为 PingFang
 ## 一切由目录驱动
 
 应用列表并未内置于启动器中。它来自本仓库中的 [`catalog/catalog.json`](catalog/catalog.json)，
-每当它在 `main` 上发生变化，就会发布到 `https://craftdepot.github.io/CraftDepot-App/catalog.json`。
+每当它在 `main` 上发生变化，就会发布到 `https://craftdepot.app/catalog.json`。
 启动器和网站都读取它。启动器会在以下时候获取它：
 
 - 启动时，并发送上次的 ETag，因此目录未变化时只需一个很小的请求；
@@ -99,7 +99,7 @@ Windows 上为 Microsoft YaHei、Nirmala UI 和 Segoe UI；macOS 上为 PingFang
 | 某个应用列在 `featured.json` 中 | 它排在默认“精选”排序的前面，并带有“精选”徽标 |
 
 **发布信息来自一个文件，而不是 GitHub 的 API。** 目录工作流每小时将每个应用的最新版本
-（文件和 SHA-256）、星数和许可证汇总到 `https://craftdepot.github.io/CraftDepot-App/releases.json`。
+（文件和 SHA-256）、星数和许可证汇总到 `https://craftdepot.app/releases.json`。
 启动器在获取目录时一并通过 ETag 获取它，因此无论目录有多长，检查所有应用的更新只需一个请求，
 也没有人会碰到 GitHub 每小时 60 次 API 请求的上限。只有索引尚未涵盖的应用（例如正在测试的本地目录）
 才会直接在 GitHub 上查询。星数和发布日期也用于 **排序** 菜单：精选、最受欢迎、名称和最近更新。
@@ -255,7 +255,7 @@ OpenID Connect 登录 Azure，而 Azure 只信任来自本仓库 `release` 环�
 - `DO_NOT_TRACK=1` 或 `CRAFTDEPOT_NO_TELEMETRY=1` 会同时关闭两者：此时目录直接来自 GitHub Pages。
 
 从源代码构建的版本两者都没有（见 [telemetry/README.md](telemetry/README.md)）。除此之外，
-CraftDepot 只会连接 `craftdepot.github.io` 和 `api.github.com` 以获取发布信息、获取目录中列出的应用图标，
+CraftDepot 只会连接 `craftdepot.app` 和 `api.github.com` 以获取发布信息、获取目录中列出的应用图标，
 以及从 `github.com` 获取你选择安装的发布文件。与任何网络请求一样，这些服务能看到你的 IP 地址。
 
 ## 目录结构

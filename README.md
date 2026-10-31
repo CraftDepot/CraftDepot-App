@@ -16,11 +16,11 @@ against its published SHA-256, and tells you when there's an update or a new app
 
 ```powershell
 # Windows
-irm https://craftdepot.github.io/CraftDepot-App/install.ps1 | iex
+irm https://craftdepot.app/install.ps1 | iex
 ```
 ```sh
 # macOS and Linux
-curl -fsSL https://craftdepot.github.io/CraftDepot-App/install.sh | sh
+curl -fsSL https://craftdepot.app/install.sh | sh
 ```
 
 The script downloads the latest release for your system from
@@ -97,7 +97,7 @@ The READMEs in other languages are translations of this one, which is the refere
 
 The list of apps isn't built into the launcher. It comes from
 [`catalog/catalog.json`](catalog/catalog.json) in this repository, which is published at
-`https://craftdepot.github.io/CraftDepot-App/catalog.json` whenever it changes on `main`. Both the
+`https://craftdepot.app/catalog.json` whenever it changes on `main`. Both the
 launcher and the website read it. The launcher fetches
 it:
 
@@ -117,7 +117,7 @@ It keeps the last good copy, so it opens instantly and works offline. When the c
 
 **Releases come from one file, not from GitHub's API.** Every hour the catalog workflow gathers
 each app's latest release (files and SHA-256s), stars and license into
-`https://craftdepot.github.io/CraftDepot-App/releases.json`. The launcher fetches that with an ETag next to
+`https://craftdepot.app/releases.json`. The launcher fetches that with an ETag next to
 the catalog, so checking every app for updates costs one request, however long the catalog gets,
 and nobody runs into GitHub's limit of 60 API requests an hour. Only an app the index doesn't
 cover yet (a local catalog being tested, say) is looked up on GitHub directly. Stars and release
@@ -274,7 +274,7 @@ The full details are in [Privacy_Statement.md](Privacy_Statement.md). In short:
   straight from GitHub Pages.
 
 A build from source has neither (see [telemetry/README.md](telemetry/README.md)). Otherwise
-CraftDepot connects only to fetch release information from `craftdepot.github.io` and `api.github.com`,
+CraftDepot connects only to fetch release information from `craftdepot.app` and `api.github.com`,
 the app icons the catalog lists, and the release files you choose to install from `github.com`.
 Those services see your IP address, as for any web request.
 

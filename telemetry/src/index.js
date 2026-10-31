@@ -13,7 +13,7 @@
 //
 // IP addresses are never stored: only the country Cloudflare derives from one.
 
-const ORIGIN = "https://craftdepot.github.io/CraftDepot-App";
+const ORIGIN = "https://craftdepot.app";
 const LAUNCHER_REPO = "CraftDepot/CraftDepot-App";
 const EVENT_DAYS = 400;
 

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://craftdepot.github.io/CraftDepot-App/catalog.schema.json",
+  "$id": "https://craftdepot.app/catalog.schema.json",
   "title": "CraftDepot catalog",
   "description": "The content config read by the CraftDepot website and polled by the CraftDepot launcher.",
   "type": "object",

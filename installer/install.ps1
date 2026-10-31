@@ -1,6 +1,6 @@
 # Installs or updates CraftDepot for the current user:
 #
-#   irm https://craftdepot.github.io/CraftDepot-App/install.ps1 | iex
+#   irm https://craftdepot.app/install.ps1 | iex
 #
 # Downloads the latest release from https://github.com/CraftDepot/CraftDepot-App/releases, checks its
 # SHA-256, puts it in %LOCALAPPDATA%\Programs\CraftDepot, adds it to the Start menu and to

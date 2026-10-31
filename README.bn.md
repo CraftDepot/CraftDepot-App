@@ -19,11 +19,11 @@ Photoshop-এর বদলে PhotoCraft, Excel-এর বদলে GridCraft, R
 
 ```powershell
 # Windows
-irm https://craftdepot.github.io/CraftDepot-App/install.ps1 | iex
+irm https://craftdepot.app/install.ps1 | iex
 ```
 ```sh
 # macOS and Linux
-curl -fsSL https://craftdepot.github.io/CraftDepot-App/install.sh | sh
+curl -fsSL https://craftdepot.app/install.sh | sh
 ```
 
 স্ক্রিপ্টটি [Releases](https://github.com/CraftDepot/CraftDepot-App/releases) থেকে আপনার সিস্টেমের জন্য
@@ -89,7 +89,7 @@ Hiragino, Kohinoor এবং SF Arabic বা Geeza Pro; Linux-এ Noto (Debian/
 
 অ্যাপের তালিকা লঞ্চারের ভেতরে বিল্ট-ইন নয়। এটি আসে এই রিপোজিটরির
 [`catalog/catalog.json`](catalog/catalog.json) থেকে, যা `main`-এ পরিবর্তন হলেই
-`https://craftdepot.github.io/CraftDepot-App/catalog.json`-এ প্রকাশিত হয়। লঞ্চার ও ওয়েবসাইট দুটোই এটি পড়ে।
+`https://craftdepot.app/catalog.json`-এ প্রকাশিত হয়। লঞ্চার ও ওয়েবসাইট দুটোই এটি পড়ে।
 লঞ্চার এটি আনে:
 
 - চালু হওয়ার সময়, শেষ ETag পাঠিয়ে, যাতে অপরিবর্তিত ক্যাটালগে মাত্র একটি ছোট অনুরোধ খরচ হয়;
@@ -108,7 +108,7 @@ Hiragino, Kohinoor এবং SF Arabic বা Geeza Pro; Linux-এ Noto (Debian/
 
 **রিলিজের তথ্য আসে একটি ফাইল থেকে, GitHub-এর API থেকে নয়।** প্রতি ঘণ্টায় ক্যাটালগ ওয়ার্কফ্লো প্রতিটি
 অ্যাপের সর্বশেষ রিলিজ (ফাইল ও SHA-256), স্টার ও লাইসেন্স সংগ্রহ করে
-`https://craftdepot.github.io/CraftDepot-App/releases.json`-এ রাখে। লঞ্চার এটি ক্যাটালগের পাশাপাশি একটি ETag দিয়ে
+`https://craftdepot.app/releases.json`-এ রাখে। লঞ্চার এটি ক্যাটালগের পাশাপাশি একটি ETag দিয়ে
 আনে, তাই ক্যাটালগ যত বড়ই হোক, প্রতিটি অ্যাপের আপডেট চেক করতে একটিই অনুরোধ লাগে, এবং কেউ ঘণ্টায় 60টি API
 অনুরোধের GitHub-এর সীমায় পৌঁছায় না। শুধু যে অ্যাপ ইনডেক্সে এখনও নেই (যেমন পরীক্ষাধীন কোনো লোকাল ক্যাটালগ),
 সেটিই সরাসরি GitHub-এ খোঁজা হয়। স্টার ও রিলিজের তারিখ **সাজান** মেনুও চালায়: বিশেষ, সবচেয়ে জনপ্রিয়, নাম
@@ -276,7 +276,7 @@ GitHub-এর OpenID Connect দিয়ে Azure-এ সাইন ইন ক�
 - `DO_NOT_TRACK=1` বা `CRAFTDEPOT_NO_TELEMETRY=1` দুটোই বন্ধ করে: তখন ক্যাটালগ সরাসরি GitHub Pages থেকে আসে।
 
 সোর্স থেকে করা বিল্ডে এর কোনোটিই নেই ([telemetry/README.md](telemetry/README.md) দেখুন)। এছাড়া CraftDepot শুধু
-`craftdepot.github.io` ও `api.github.com` থেকে রিলিজের তথ্য, ক্যাটালগে তালিকাভুক্ত অ্যাপ আইকন, এবং `github.com` থেকে আপনি
+`craftdepot.app` ও `api.github.com` থেকে রিলিজের তথ্য, ক্যাটালগে তালিকাভুক্ত অ্যাপ আইকন, এবং `github.com` থেকে আপনি
 যে রিলিজ ফাইলগুলো ইনস্টল করতে বেছে নেন সেগুলো আনতে সংযোগ করে। যেকোনো ওয়েব অনুরোধের মতোই ওই সার্ভিসগুলো আপনার IP
 ঠিকানা দেখতে পায়।
 

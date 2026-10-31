@@ -1,7 +1,7 @@
 #!/bin/sh
 # Installs or updates CraftDepot for the current user:
 #
-#   curl -fsSL https://craftdepot.github.io/CraftDepot-App/install.sh | sh
+#   curl -fsSL https://craftdepot.app/install.sh | sh
 #
 # Downloads the latest release from https://github.com/CraftDepot/CraftDepot-App/releases, checks its
 # SHA-256, installs it and opens it. Run it again to update.
@@ -45,7 +45,7 @@ main() {
         *) fail "there's no CraftDepot build for $(uname -m) yet" ;;
         esac
         ;;
-    *) fail "this script is for macOS and Linux; on Windows run: irm https://craftdepot.github.io/CraftDepot-App/install.ps1 | iex" ;;
+    *) fail "this script is for macOS and Linux; on Windows run: irm https://craftdepot.app/install.ps1 | iex" ;;
     esac
 
     dist=${CRAFTDEPOT_DIST:-}

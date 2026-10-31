@@ -97,9 +97,9 @@ with anyone else, and we don't use it for advertising.
 
 ## Other services CraftDepot connects to
 
-To work at all, CraftDepot connects to GitHub (`github.com`, `api.github.com`, and
-`craftdepot.github.io`, which serves the catalog and install scripts), and to the web addresses where the
-catalog's app icons are kept. These services receive your IP address and CraftDepot's `User-Agent`,
+To work at all, CraftDepot connects to GitHub (`github.com`, `api.github.com`, and `craftdepot.app`,
+hosted on GitHub Pages, which serves the catalog and install scripts), and to the web addresses where
+the catalog's app icons are kept. These services receive your IP address and CraftDepot's `User-Agent`,
 like any other web request, and their own privacy policies apply. Downloads from GitHub also add to
 the public download counts on GitHub releases.
 

@@ -9,7 +9,7 @@ use crate::http::{Fetched, Http};
 use crate::paths::{Paths, write_atomic};
 
 /// The published catalog. Release builds always use it; users can't change it.
-pub const FEED: &str = "https://craftdepot.github.io/CraftDepot-App/catalog.json";
+pub const FEED: &str = "https://craftdepot.app/catalog.json";
 
 pub enum FeedResult {
     Updated(Box<Parsed>),
