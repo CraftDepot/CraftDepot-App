@@ -37,8 +37,8 @@ jobs:
         run: shellcheck installer/install.sh scripts/dist.sh
 
   # Publishes to https://craftdepot.github.io/CraftDepot-App/: catalog.json (with featured.json merged in),
-  # which every launcher polls; releases.json, every app's latest release and stars; and the
-  # install scripts.
+  # which every launcher polls; releases.json, every app's latest release and stars; the install
+  # scripts; and the website, built from those files out of the private CraftDepot-Site repository.
   deploy:
     needs: check
     # A push publishes only a catalog that passed the check. The scheduled runs publish anyway: one
@@ -69,6 +69,26 @@ jobs:
         run: node catalog/releases.mjs _site/releases.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # The website replaces catalog/index.html at the root. Launchers only need the files above, so
+      # if the site can't be checked out or built, the catalog is published anyway with its own page.
+      - name: Check out the website
+        id: site
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          repository: CraftDepot/CraftDepot-Site
+          ssh-key: ${{ secrets.SITE_DEPLOY_KEY }}
+          path: site
+      - name: Build the website
+        id: site-build
+        if: steps.site.outcome == 'success'
+        continue-on-error: true
+        run: |
+          node site/build.mjs --catalog _site/catalog.json --releases _site/releases.json --out site/dist
+          cp -r site/dist/. _site/
+      - name: Warn when the website is left out
+        if: steps.site-build.outcome != 'success'
+        run: echo "::warning::The website wasn't built, so this publish has only the catalog's own page. Is SITE_DEPLOY_KEY set?"
       - uses: actions/upload-pages-artifact@v3
       - id: deployment
         uses: actions/deploy-pages@v4
