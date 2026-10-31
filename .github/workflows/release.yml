@@ -1,0 +1,345 @@
+name: Release
+
+# Pushing a tag like v0.1.0 builds every platform, installs each build with the install scripts,
+# and publishes a GitHub release. Running it by hand (Actions > Release > Run workflow) does the
+# same without publishing: the builds are attached to the run as artifacts, for testing.
+#
+# Signing switches on by itself once its secrets are set (see "Signing" in the README):
+#   macOS    APPLE_CERTIFICATE, APPLE_CERTIFICATE_PASSWORD: sign with Developer ID
+#            APPLE_API_KEY, APPLE_API_KEY_ID, APPLE_API_ISSUER: also notarize
+#   Windows  the AZURE_* and ARTIFACT_SIGNING_* variables: sign with Microsoft's Artifact Signing,
+#            and build the .msi installers (only signed: an unsigned installer is all warnings)
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: windows-latest, target: x86_64-pc-windows-msvc }
+          - { os: windows-11-arm, target: aarch64-pc-windows-msvc }
+          - { os: macos-latest, target: universal-apple-darwin }
+          # The oldest supported Ubuntu, so the builds run on older glibc too.
+          - { os: ubuntu-22.04, target: x86_64-unknown-linux-gnu }
+          - { os: ubuntu-22.04-arm, target: aarch64-unknown-linux-gnu }
+    runs-on: ${{ matrix.os }}
+    name: build (${{ matrix.target }})
+    env:
+      MAC_SIGNING: ${{ secrets.APPLE_CERTIFICATE != '' }}
+      # The usage statistics endpoint built into the launcher (see telemetry/README.md). Unset, the
+      # builds send no statistics and fetch the catalog straight from GitHub Pages.
+      CRAFTDEPOT_TELEMETRY: ${{ vars.CRAFTDEPOT_TELEMETRY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Tag matches Cargo.toml
+        if: startsWith(github.ref, 'refs/tags/')
+        shell: bash
+        run: |
+          version=$(sed -n 's/^version = "\(.*\)"/\1/p' Cargo.toml | head -n 1)
+          [ "${GITHUB_REF_NAME#v}" = "$version" ] || { echo "Tag $GITHUB_REF_NAME doesn't match Cargo.toml's version $version"; exit 1; }
+      - name: Linux windowing headers
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libxkbcommon-dev libwayland-dev libx11-dev libxrandr-dev libxi-dev libgl1-mesa-dev
+
+      - name: Developer ID certificate (macOS)
+        if: runner.os == 'macOS' && env.MAC_SIGNING == 'true'
+        env:
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_API_KEY: ${{ secrets.APPLE_API_KEY }}
+          APPLE_API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID }}
+          APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
+        run: |
+          # A throwaway keychain holding only the certificate, so codesign can use it unattended.
+          keychain="$RUNNER_TEMP/signing.keychain-db"
+          password=$(openssl rand -hex 16)
+          printf '%s' "$APPLE_CERTIFICATE" | base64 --decode > "$RUNNER_TEMP/certificate.p12"
+          security create-keychain -p "$password" "$keychain"
+          security set-keychain-settings -lut 21600 "$keychain"
+          security unlock-keychain -p "$password" "$keychain"
+          security import "$RUNNER_TEMP/certificate.p12" -k "$keychain" -P "$APPLE_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple: -s -k "$password" "$keychain" >/dev/null
+          # shellcheck disable=SC2046 # one argument per keychain already listed
+          security list-keychains -d user -s "$keychain" $(security list-keychains -d user | tr -d '"')
+          rm "$RUNNER_TEMP/certificate.p12"
+          identity=$(security find-identity -v -p codesigning "$keychain" | sed -n 's/.*"\(Developer ID Application: .*\)"$/\1/p' | head -n 1)
+          [ -n "$identity" ] || { echo "APPLE_CERTIFICATE has no Developer ID Application identity"; exit 1; }
+          echo "APPLE_SIGNING_IDENTITY=$identity" >> "$GITHUB_ENV"
+          if [ -n "$APPLE_API_KEY" ]; then
+            printf '%s' "$APPLE_API_KEY" | base64 --decode > "$RUNNER_TEMP/notary.p8"
+            { echo "APPLE_API_KEY_PATH=$RUNNER_TEMP/notary.p8"
+              echo "APPLE_API_KEY_ID=$APPLE_API_KEY_ID"
+              echo "APPLE_API_ISSUER=$APPLE_API_ISSUER"; } >> "$GITHUB_ENV"
+          fi
+
+      - name: Build (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          rustup target add ${{ matrix.target }}
+          ./scripts/dist.ps1 -Target ${{ matrix.target }}
+      - name: Build (macOS, Linux)
+        if: runner.os != 'Windows'
+        run: sh scripts/dist.sh ${{ runner.os == 'Linux' && matrix.target || '' }}
+
+      - name: Install it with the install script (Windows)
+        if: runner.os == 'Windows'
+        env:
+          CRAFTDEPOT_DIST: ${{ github.workspace }}/dist
+          CRAFTDEPOT_NO_LAUNCH: "1"
+        shell: powershell # Windows PowerShell 5.1, what most people's computers run
+        run: |
+          ./install/install.ps1
+          $version = (Get-Item "$env:LOCALAPPDATA\Programs\CraftDepot\craftdepot.exe").VersionInfo.ProductVersion
+          if (-not $version) { throw 'the installed exe has no version' }
+          if ($env:GITHUB_REF_TYPE -eq 'tag' -and $version -ne $env:GITHUB_REF_NAME.TrimStart('v')) { throw "installed $version, not $env:GITHUB_REF_NAME" }
+          if (-not (Test-Path "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\CraftDepot.lnk")) { throw 'no Start menu shortcut' }
+          & "$env:LOCALAPPDATA\Programs\CraftDepot\uninstall.ps1"
+          if (Test-Path "$env:LOCALAPPDATA\Programs\CraftDepot") { throw 'uninstall left files behind' }
+      - name: Install it with the install script (macOS, Linux)
+        if: runner.os != 'Windows'
+        env:
+          CRAFTDEPOT_DIST: ${{ github.workspace }}/dist
+          CRAFTDEPOT_NO_LAUNCH: "1"
+        run: |
+          sh install/install.sh
+          if [ "$RUNNER_OS" = macOS ]; then
+            app="$HOME/Applications/CraftDepot.app"
+            exe="$app/Contents/MacOS/craftdepot"
+            lipo -archs "$exe" | grep -q x86_64 && lipo -archs "$exe" | grep -q arm64
+            codesign --verify --strict "$app"
+            # Notarized: Gatekeeper accepts it as a download from an identified developer.
+            if [ -n "${APPLE_API_KEY_PATH:-}" ]; then spctl --assess --type execute -vv "$app"; xcrun stapler validate "$app"; fi
+            # The disk image holds the same app, and a link to drag it onto.
+            dmg="$CRAFTDEPOT_DIST/craftdepot-macos-universal.dmg"
+            mount=$(mktemp -d)
+            hdiutil attach "$dmg" -nobrowse -readonly -mountpoint "$mount" >/dev/null
+            codesign --verify --strict "$mount/CraftDepot.app"
+            [ "$(readlink "$mount/Applications")" = /Applications ]
+            "$mount/CraftDepot.app/Contents/MacOS/craftdepot" --version | grep -q '^craftdepot [0-9]'
+            hdiutil detach "$mount" >/dev/null
+            if [ -n "${APPLE_API_KEY_PATH:-}" ]; then
+              spctl --assess --type open --context context:primary-signature -vv "$dmg"
+              xcrun stapler validate "$dmg"
+            fi
+          else
+            exe="$HOME/.local/bin/craftdepot"
+          fi
+          "$exe" --version | grep -q '^craftdepot [0-9]'
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: craftdepot-${{ matrix.target }}
+          path: dist/craftdepot-*
+          if-no-files-found: error
+
+  # Signs craftdepot.exe in both Windows zips with Microsoft's Artifact Signing, packages each
+  # signed exe as an .msi installer, and signs those. Its action only runs on x86_64 Windows, so
+  # this one job does the Arm builds too. It signs in the `release` environment, the only place
+  # Azure accepts this workflow's sign-in from (see the README).
+  sign-windows:
+    needs: build
+    if: vars.ARTIFACT_SIGNING_ACCOUNT != ''
+    runs-on: windows-2025
+    environment: release
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: craftdepot-*-pc-windows-msvc
+          path: unsigned
+          merge-multiple: true
+      - name: Unpack
+        run: |
+          foreach ($zip in Get-ChildItem unsigned -Filter 'craftdepot-windows-*.zip') {
+            Expand-Archive $zip.FullName -DestinationPath "sign/$($zip.BaseName)"
+          }
+      - uses: azure/login@v3
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      - uses: azure/artifact-signing-action@v2
+        with:
+          endpoint: ${{ vars.ARTIFACT_SIGNING_ENDPOINT }}
+          signing-account-name: ${{ vars.ARTIFACT_SIGNING_ACCOUNT }}
+          certificate-profile-name: ${{ vars.ARTIFACT_SIGNING_PROFILE }}
+          files-folder: ${{ github.workspace }}\sign
+          files-folder-filter: exe
+          files-folder-recurse: true
+          file-digest: SHA256
+          timestamp-rfc3161: http://timestamp.acs.microsoft.com
+          timestamp-digest: SHA256
+          description: CraftDepot
+          description-url: https://github.com/CraftDepot/CraftDepot-App
+      - name: Check the signatures, zip them up again and build the installers
+        run: |
+          New-Item -ItemType Directory signed | Out-Null
+          foreach ($dir in Get-ChildItem sign -Directory) {
+            $sig = Get-AuthenticodeSignature "$($dir.FullName)/craftdepot.exe"
+            if ($sig.Status -ne 'Valid') { throw "$($dir.Name): signature is $($sig.Status)" }
+            if (-not $sig.TimeStamperCertificate) { throw "$($dir.Name): not timestamped" }
+            Write-Host "$($dir.Name): signed by $($sig.SignerCertificate.Subject)"
+            Compress-Archive -Path "$($dir.FullName)/craftdepot.exe" -DestinationPath "signed/$($dir.Name).zip"
+            ./scripts/msi.ps1 -Exe "$($dir.FullName)/craftdepot.exe" -Arch ($dir.Name -replace '^craftdepot-windows-', '') -Out signed
+          }
+      - name: Sign the installers
+        uses: azure/artifact-signing-action@v2
+        with:
+          endpoint: ${{ vars.ARTIFACT_SIGNING_ENDPOINT }}
+          signing-account-name: ${{ vars.ARTIFACT_SIGNING_ACCOUNT }}
+          certificate-profile-name: ${{ vars.ARTIFACT_SIGNING_PROFILE }}
+          files-folder: ${{ github.workspace }}\signed
+          files-folder-filter: msi
+          file-digest: SHA256
+          timestamp-rfc3161: http://timestamp.acs.microsoft.com
+          timestamp-digest: SHA256
+          description: CraftDepot
+          description-url: https://github.com/CraftDepot/CraftDepot-App
+      - name: Install, update and uninstall with the installer
+        run: |
+          foreach ($msi in Get-ChildItem signed -Filter *.msi) {
+            $sig = Get-AuthenticodeSignature $msi.FullName
+            if ($sig.Status -ne 'Valid' -or -not $sig.TimeStamperCertificate) { throw "$($msi.Name): signature is $($sig.Status)" }
+          }
+          $msi = (Resolve-Path signed/craftdepot-windows-x86_64.msi).Path
+          $exe = "$env:LOCALAPPDATA\Programs\CraftDepot\craftdepot.exe"
+          $link = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\CraftDepot.lnk"
+          function msiexec { $p = Start-Process msiexec.exe -ArgumentList $args -Wait -PassThru; if ($p.ExitCode -ne 0) { throw "msiexec $args stopped with $($p.ExitCode)" } }
+          # Settings > Apps lists install.ps1's copy from the Uninstall key (missing until something
+          # writes one), and the .msi's from Windows Installer's own records, found by upgrade code.
+          function listed {
+            Get-ChildItem HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall -ErrorAction SilentlyContinue | Where-Object { (Get-ItemProperty $_.PSPath).DisplayName -eq 'CraftDepot' }
+            foreach ($code in (New-Object -ComObject WindowsInstaller.Installer).RelatedProducts('{F16DC195-9991-453F-832C-14264E8111B2}')) { $code }
+          }
+
+          msiexec /i $msi /qn
+          if ((Get-AuthenticodeSignature $exe).Status -ne 'Valid') { throw 'the installed exe is not signed' }
+          if (-not (Test-Path $link)) { throw 'no Start menu shortcut' }
+          if ((listed).Count -ne 1) { throw "Settings > Apps lists CraftDepot $((listed).Count) times" }
+          # An update, while the launcher runs in the tray: each build of the .msi is a new product,
+          # so a second one replaces the first as a newer release would.
+          ./scripts/msi.ps1 -Exe $exe -Arch x86_64 -Out "$env:RUNNER_TEMP\update"
+          Start-Process $exe -ArgumentList '--background'; Start-Sleep 3
+          msiexec /i "$env:RUNNER_TEMP\update\craftdepot-windows-x86_64.msi" /qn
+          if (Get-Process craftdepot -ErrorAction SilentlyContinue) { throw 'the update left the old launcher running' }
+          if ((listed).Count -ne 1) { throw "after the update, Settings > Apps lists CraftDepot $((listed).Count) times" }
+          # An update keeps the launcher starting at sign-in; uninstalling turns that off. The runner's
+          # user has no Run key yet; the launcher creates it when Start on logon is turned on.
+          New-Item HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -ErrorAction SilentlyContinue | Out-Null
+          Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -Name CraftDepot -Value "`"$exe`" --background"
+          ./scripts/msi.ps1 -Exe $exe -Arch x86_64 -Out "$env:RUNNER_TEMP\update2"
+          msiexec /i "$env:RUNNER_TEMP\update2\craftdepot-windows-x86_64.msi" /qn
+          if (-not (Get-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -Name CraftDepot -ErrorAction SilentlyContinue)) { throw 'the update turned off starting at sign-in' }
+          # The install script takes over, leaving one entry, then removes it all.
+          $env:CRAFTDEPOT_DIST = "$PWD\signed"; $env:CRAFTDEPOT_NO_LAUNCH = '1'
+          Get-ChildItem signed -Filter *.zip | ForEach-Object { "$((Get-FileHash $_.FullName).Hash.ToLower())  $($_.Name)" } | Set-Content signed/SHA256SUMS
+          ./install/install.ps1
+          if ((listed).Count -ne 1) { throw "after install.ps1, Settings > Apps lists CraftDepot $((listed).Count) times" }
+          if (-not (Get-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -Name CraftDepot -ErrorAction SilentlyContinue)) { throw 'install.ps1 turned off starting at sign-in' }
+          powershell -NoProfile -ExecutionPolicy Bypass -File "$env:LOCALAPPDATA\Programs\CraftDepot\uninstall.ps1"
+          if ((Test-Path $exe) -or (Test-Path $link) -or (listed).Count) { throw 'uninstalling left CraftDepot behind' }
+          # The installer takes over from the script, then uninstalls as Settings > Apps would.
+          ./install/install.ps1
+          msiexec /i $msi /qn
+          if ((listed).Count -ne 1) { throw "after the .msi over install.ps1, Settings > Apps lists CraftDepot $((listed).Count) times" }
+          if (Test-Path "$env:LOCALAPPDATA\Programs\CraftDepot\uninstall.ps1") { throw "the .msi left install.ps1's uninstaller" }
+          Set-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -Name CraftDepot -Value "`"$exe`" --background"
+          msiexec /x $msi /qn
+          if ((Test-Path $exe) -or (Test-Path $link) -or (listed).Count) { throw 'uninstalling the .msi left CraftDepot behind' }
+          if (Get-ItemProperty HKCU:\Software\Microsoft\Windows\CurrentVersion\Run -Name CraftDepot -ErrorAction SilentlyContinue) { throw 'uninstalling the .msi left it starting at sign-in' }
+          # For everyone (as the dialog's Everyone does; the runner is an administrator, so Windows
+          # doesn't ask): Program Files and everyone's Start menu. A newer installer won't make the
+          # other choice over an installed copy, either way round. Settings > Apps removes it by
+          # product code.
+          $exeAll = "$env:ProgramFiles\CraftDepot\craftdepot.exe"
+          $linkAll = "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\CraftDepot.lnk"
+          $update = "$env:RUNNER_TEMP\update\craftdepot-windows-x86_64.msi"
+          function refused { (Start-Process msiexec.exe -ArgumentList $args -Wait -PassThru).ExitCode -ne 0 }
+          function products { (New-Object -ComObject WindowsInstaller.Installer).RelatedProducts('{F16DC195-9991-453F-832C-14264E8111B2}') }
+          msiexec /i $msi /qn
+          if (-not (refused /i $update /qn ALLUSERS=1) -or (Test-Path $exeAll)) { throw 'installing for everyone over a copy for this user was not refused' }
+          foreach ($code in (products)) { msiexec /x $code /qn }
+          msiexec /i $msi /qn ALLUSERS=1
+          if (-not (Test-Path $exeAll) -or -not (Test-Path $linkAll) -or (Test-Path $exe) -or (Test-Path $link)) { throw 'installing for everyone put CraftDepot in the wrong place' }
+          if ((Get-AuthenticodeSignature $exeAll).Status -ne 'Valid') { throw 'the exe installed for everyone is not signed' }
+          if (-not (refused /i $update /qn) -or (Test-Path $exe)) { throw 'installing for this user over a copy for everyone was not refused' }
+          msiexec /i $update /qn ALLUSERS=1
+          if ((listed).Count -ne 1) { throw "after updating the copy for everyone, Settings > Apps lists CraftDepot $((listed).Count) times" }
+          foreach ($code in (products)) { msiexec /x $code /qn }
+          if ((Test-Path $exeAll) -or (Test-Path $linkAll) -or (listed).Count) { throw 'uninstalling the copy for everyone left CraftDepot behind' }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-signed
+          path: |
+            signed/craftdepot-windows-*.zip
+            signed/craftdepot-windows-*.msi
+          if-no-files-found: error
+
+  release:
+    needs: [build, sign-windows]
+    # Without Artifact Signing set up, sign-windows is skipped and the release ships unsigned Windows builds.
+    if: >-
+      !cancelled() && startsWith(github.ref, 'refs/tags/') &&
+      needs.build.result == 'success' && needs.sign-windows.result != 'failure'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: craftdepot-*
+          path: dist
+          merge-multiple: true
+      - name: Swap in the signed Windows builds
+        if: needs.sign-windows.result == 'success'
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-signed
+          path: dist
+      - name: SHA256SUMS
+        working-directory: dist
+        run: sha256sum craftdepot-* > SHA256SUMS && cat SHA256SUMS
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" dist/* --repo "$GITHUB_REPOSITORY" --title "CraftDepot ${GITHUB_REF_NAME#v}" --generate-notes
+
+  # Tells running launchers about the release: they update themselves when the catalog's
+  # launcher.version is newer than theirs (see src/selfupdate.rs). A push made with the workflow's
+  # token doesn't start other workflows, so this one asks the Catalog workflow to publish it.
+  announce:
+    needs: release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+      - name: Set the catalog's launcher.version
+        run: |
+          version=${GITHUB_REF_NAME#v}
+          jq --indent 2 --arg v "$version" '.launcher.version = $v' catalog/catalog.json > catalog.json.new
+          mv catalog.json.new catalog/catalog.json
+          if git diff --quiet; then echo "launcher.version is already $version"; exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -am "catalog: launcher $version"
+          git push
+      - name: Publish the catalog
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run catalog.yml --repo "$GITHUB_REPOSITORY" --ref "${{ github.event.repository.default_branch }}"

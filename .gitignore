@@ -1,0 +1,7 @@
+/target
+/dist
+/catalog/releases.json
+AGENTS.md
+/telemetry/.wrangler
+/telemetry/.wrangler/**
+/telemetry/wrangler.toml

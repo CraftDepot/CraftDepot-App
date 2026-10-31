@@ -1,0 +1,571 @@
+{
+  "$schema": "./catalog.schema.json",
+  "schema": 1,
+  "name": "CraftDepot",
+  "tagline": "Well-known software, rewritten in Rust.",
+  "updated": "2026-10-26",
+  "refresh_hours": 6,
+  "launcher": {
+    "version": "0.1.0",
+    "repo": "CraftDepot/CraftDepot-App"
+  },
+  "categories": [
+    {
+      "id": "creative",
+      "name": "Creative"
+    },
+    {
+      "id": "office",
+      "name": "Office"
+    },
+    {
+      "id": "engineering",
+      "name": "CAD & engineering"
+    },
+    {
+      "id": "utilities",
+      "name": "Utilities"
+    }
+  ],
+  "notices": [],
+  "apps": [
+    {
+      "id": "photocraft",
+      "name": "PhotoCraft",
+      "replaces": [
+        "Photoshop"
+      ],
+      "category": "creative",
+      "kind": "gui",
+      "tagline": "Image editing that feels familiar",
+      "description": "Layers, masks, adjustment layers and type, with real PSD files in and out.",
+      "repo": "storytold/photocraft",
+      "homepage": "https://getartcraft.com/apps/photocraft",
+      "license": "MIT OR Apache-2.0",
+      "color": "#2f7bf5",
+      "icon": "https://raw.githubusercontent.com/storytold/photocraft/main/assets/app-icon/hicolor/128x128/apps/ai.storyteller.photocraft.png",
+      "added": "2026-10-26",
+      "assets": {
+        "windows-x86_64": "photocraft-*-windows-x64.msi",
+        "macos-x86_64": "photocraft-*-macos-universal.dmg",
+        "macos-aarch64": "photocraft-*-macos-universal.dmg",
+        "linux-x86_64": "photocraft-*-linux-x86_64.AppImage",
+        "linux-aarch64": "photocraft-*-linux-aarch64.AppImage",
+        "windows-aarch64": "photocraft-*-windows-arm64.msi"
+      },
+      "bin": [
+        "photocraft"
+      ],
+      "launch": {
+        "windows": "%ProgramFiles%\\PhotoCraft\\photocraft.exe",
+        "macos": "/Applications/PhotoCraft.app"
+      }
+    },
+    {
+      "id": "vectorcraft",
+      "name": "VectorCraft",
+      "replaces": [
+        "Illustrator"
+      ],
+      "category": "creative",
+      "kind": "gui",
+      "tagline": "Vector illustration",
+      "description": "Pen and shape tools, artboards and gradients, with SVG, PDF and AI import.",
+      "repo": "storytold/vectorcraft",
+      "homepage": "https://getartcraft.com/apps/vectorcraft",
+      "license": "MIT OR Apache-2.0",
+      "color": "#e8573f",
+      "icon": "https://raw.githubusercontent.com/storytold/vectorcraft/main/assets/app-icon/hicolor/128x128/apps/ai.storyteller.vectorcraft.png",
+      "added": "2026-10-26",
+      "assets": {
+        "windows-x86_64": "vectorcraft-*-windows-x64.msi",
+        "macos-x86_64": "vectorcraft-*-macos-universal.dmg",
+        "macos-aarch64": "vectorcraft-*-macos-universal.dmg",
+        "linux-x86_64": "vectorcraft-*-linux-x86_64.AppImage",
+        "linux-aarch64": "vectorcraft-*-linux-aarch64.AppImage",
+        "windows-aarch64": "vectorcraft-*-windows-arm64.msi"
+      },
+      "bin": [
+        "vectorcraft"
+      ],
+      "launch": {
+        "windows": "%ProgramFiles%\\VectorCraft\\vectorcraft.exe",
+        "macos": "/Applications/VectorCraft.app"
+      }
+    },
+    {
+      "id": "filmcraft",
+      "name": "FilmCraft",
+      "replaces": [
+        "Premiere Pro",
+        "DaVinci Resolve"
+      ],
+      "category": "creative",
+      "kind": "gui",
+      "tagline": "Video editing, color and sound",
+      "description": "A timeline editor with color grading and audio mixing in one app.",
+      "repo": "storytold/filmcraft",
+      "homepage": "https://getartcraft.com/apps/filmcraft",
+      "license": "MIT OR Apache-2.0",
+      "color": "#8b5cf6",
+      "icon": "https://raw.githubusercontent.com/storytold/filmcraft/main/assets/app-icon/hicolor/128x128/apps/ai.storyteller.filmcraft.png",
+      "added": "2026-10-26",
+      "assets": {
+        "windows-x86_64": "filmcraft-*-windows-x64.msi",
+        "macos-x86_64": "filmcraft-*-macos-universal.dmg",
+        "macos-aarch64": "filmcraft-*-macos-universal.dmg",
+        "linux-x86_64": "filmcraft-*-linux-x86_64.AppImage",
+        "linux-aarch64": "filmcraft-*-linux-aarch64.AppImage",
+        "windows-aarch64": "filmcraft-*-windows-arm64.msi"
+      },
+      "bin": [
+        "filmcraft"
+      ],
+      "launch": {
+        "windows": "%ProgramFiles%\\FilmCraft\\filmcraft.exe",
+        "macos": "/Applications/FilmCraft.app"
+      }
+    },
+    {
+      "id": "lightcraft",
+      "name": "LightCraft",
+      "replaces": [
+        "Lightroom"
+      ],
+      "category": "creative",
+      "kind": "gui",
+      "tagline": "Photo library and raw development",
+      "description": "Organize your photos and develop raw files non-destructively, all on your own computer.",
+      "repo": "storytold/lightcraft",
+      "homepage": "https://getartcraft.com/apps/lightcraft",
+      "license": "MIT OR Apache-2.0",
+      "color": "#f2a516",
+      "icon": "https://raw.githubusercontent.com/storytold/lightcraft/main/assets/app-icon/hicolor/128x128/apps/ai.storyteller.lightcraft.png",
+      "added": "2026-10-26",
+      "assets": {
+        "windows-x86_64": "lightcraft-*-windows-x64.msi",
+        "macos-x86_64": "lightcraft-*-macos-universal.dmg",
+        "macos-aarch64": "lightcraft-*-macos-universal.dmg",
+        "linux-x86_64": "lightcraft-*-linux-x86_64.AppImage",
+        "linux-aarch64": "lightcraft-*-linux-aarch64.AppImage",
+        "windows-aarch64": "lightcraft-*-windows-arm64.msi"
+      },
+      "bin": [
+        "lightcraft"
+      ],
+      "launch": {
+        "windows": "%ProgramFiles%\\LightCraft\\lightcraft.exe",
+        "macos": "/Applications/LightCraft.app"
+      }
+    },
+    {
+      "id": "effectcraft",
+      "name": "EffectCraft",
+      "replaces": [
+        "After Effects"
+      ],
+      "category": "creative",
+      "kind": "gui",
+      "tagline": "Motion graphics and visual effects",
+      "description": "Keyframed compositions, layers and effects for titles, motion design and VFX.",
+      "repo": "storytold/effectcraft",
+      "homepage": "https://getartcraft.com/apps/effectcraft",
+      "license": "MIT OR Apache-2.0",
+      "color": "#e0368f",
+      "icon": "https://raw.githubusercontent.com/storytold/effectcraft/main/assets/app-icon/hicolor/128x128/apps/ai.storyteller.effectcraft.png",
+      "added": "2026-10-26",
+      "assets": {
+        "windows-x86_64": "effectcraft-*-windows-x64.msi",
+        "macos-x86_64": "effectcraft-*-macos-universal.dmg",
+        "macos-aarch64": "effectcraft-*-macos-universal.dmg",
+        "linux-x86_64": "effectcraft-*-linux-x86_64.AppImage",
+        "linux-aarch64": "effectcraft-*-linux-aarch64.AppImage",
+        "windows-aarch64": "effectcraft-*-windows-arm64.msi"
+      },
+      "bin": [
+        "effectcraft"
+      ],
+      "launch": {
+        "windows": "%ProgramFiles%\\EffectCraft\\effectcraft.exe",
+        "macos": "/Applications/EffectCraft.app"
+      }
+    },
+    {
+      "id": "designcraft",
+      "name": "DesignCraft",
+      "replaces": [
+        "InDesign"
+      ],
+      "category": "creative",
+      "kind": "gui",
+      "tagline": "Page layout and publishing",
+      "description": "Lay out magazines, books and brochures with master pages, text frames and print-ready PDF.",
+      "repo": "storytold/designcraft",
+      "homepage": "https://getartcraft.com/apps/designcraft",
+      "license": "MIT OR Apache-2.0",
+      "color": "#7bb51c",
+      "icon": "https://raw.githubusercontent.com/storytold/designcraft/main/assets/app-icon/hicolor/128x128/apps/ai.storyteller.designcraft.png",
+      "added": "2026-10-26",
+      "assets": {
+        "windows-x86_64": "designcraft-*-windows-x64.msi",
+        "macos-x86_64": "designcraft-*-macos-universal.dmg",
+        "macos-aarch64": "designcraft-*-macos-universal.dmg",
+        "linux-x86_64": "designcraft-*-linux-x86_64.AppImage",
+        "linux-aarch64": "designcraft-*-linux-aarch64.AppImage",
+        "windows-aarch64": "designcraft-*-windows-arm64.msi"
+      },
+      "bin": [
+        "designcraft"
+      ],
+      "launch": {
+        "windows": "%ProgramFiles%\\DesignCraft\\designcraft.exe",
+        "macos": "/Applications/DesignCraft.app"
+      }
+    },
+    {
+      "id": "figcraft",
+      "name": "FigCraft",
+      "replaces": [
+        "Figma"
+      ],
+      "category": "creative",
+      "kind": "gui",
+      "tagline": "Interface design and prototyping",
+      "description": "Design screens with frames, components and auto layout, then click through prototypes.",
+      "repo": "storytold/figcraft",
+      "homepage": "https://getartcraft.com/apps/figcraft",
+      "license": "MIT OR Apache-2.0",
+      "color": "#02da96",
+      "icon": "https://raw.githubusercontent.com/storytold/figcraft/main/assets/app-icon/hicolor/128x128/apps/ai.storyteller.figcraft.png",
+      "added": "2026-10-26",
+      "assets": {
+        "windows-x86_64": "figcraft-*-windows-x64.msi",
+        "macos-x86_64": "figcraft-*-macos-universal.dmg",
+        "macos-aarch64": "figcraft-*-macos-universal.dmg",
+        "linux-x86_64": "figcraft-*-linux-x86_64.AppImage",
+        "linux-aarch64": "figcraft-*-linux-aarch64.AppImage",
+        "windows-aarch64": "figcraft-*-windows-arm64.msi"
+      },
+      "bin": [
+        "figcraft"
+      ],
+      "launch": {
+        "windows": "%ProgramFiles%\\FigCraft\\figcraft.exe",
+        "macos": "/Applications/FigCraft.app"
+      }
+    },
+    {
+      "id": "soundcraft",
+      "name": "SoundCraft",
+      "replaces": [
+        "Audition"
+      ],
+      "category": "creative",
+      "kind": "gui",
+      "tagline": "Recording, editing and mixing audio",
+      "description": "Multitrack recording and editing with effects and mixing.",
+      "repo": "storytold/soundcraft",
+      "homepage": "https://getartcraft.com/apps/soundcraft",
+      "license": "MIT OR Apache-2.0",
+      "color": "#1fa5c9",
+      "icon": "https://raw.githubusercontent.com/storytold/soundcraft/main/assets/app-icon/hicolor/128x128/apps/ai.storyteller.soundcraft.png",
+      "added": "2026-10-26",
+      "assets": {
+        "windows-x86_64": "soundcraft-*-windows-x64.msi",
+        "macos-x86_64": "soundcraft-*-macos-universal.dmg",
+        "macos-aarch64": "soundcraft-*-macos-universal.dmg",
+        "linux-x86_64": "soundcraft-*-linux-x86_64.AppImage",
+        "linux-aarch64": "soundcraft-*-linux-aarch64.AppImage",
+        "windows-aarch64": "soundcraft-*-windows-arm64.msi"
+      },
+      "bin": [
+        "soundcraft"
+      ],
+      "launch": {
+        "windows": "%ProgramFiles%\\SoundCraft\\soundcraft.exe",
+        "macos": "/Applications/SoundCraft.app"
+      }
+    },
+    {
+      "id": "wordcraft",
+      "name": "WordCraft",
+      "replaces": [
+        "Microsoft Word"
+      ],
+      "category": "office",
+      "kind": "gui",
+      "tagline": "Writing and document design",
+      "description": "A fast word processor that opens and saves Word documents.",
+      "repo": "storytold/wordcraft",
+      "homepage": "https://getartcraft.com/apps/wordcraft",
+      "license": "MIT OR Apache-2.0",
+      "color": "#3f5fe0",
+      "icon": "https://raw.githubusercontent.com/storytold/wordcraft/main/assets/app-icon/hicolor/128x128/apps/ai.storyteller.wordcraft.png",
+      "added": "2026-10-26",
+      "assets": {
+        "windows-x86_64": "wordcraft-*-windows-x64.msi",
+        "macos-x86_64": "wordcraft-*-macos-universal.dmg",
+        "macos-aarch64": "wordcraft-*-macos-universal.dmg",
+        "linux-x86_64": "wordcraft-*-linux-x86_64.AppImage",
+        "linux-aarch64": "wordcraft-*-linux-aarch64.AppImage",
+        "windows-aarch64": "wordcraft-*-windows-arm64.msi"
+      },
+      "bin": [
+        "wordcraft"
+      ],
+      "launch": {
+        "windows": "%ProgramFiles%\\WordCraft\\wordcraft.exe",
+        "macos": "/Applications/WordCraft.app"
+      }
+    },
+    {
+      "id": "deckcraft",
+      "name": "DeckCraft",
+      "replaces": [
+        "PowerPoint",
+        "Keynote"
+      ],
+      "category": "office",
+      "kind": "gui",
+      "tagline": "Presentations and slide shows",
+      "description": "Build slide decks with themes, layouts and transitions, and present them.",
+      "repo": "storytold/deckcraft",
+      "homepage": "https://getartcraft.com/apps/deckcraft",
+      "license": "MIT OR Apache-2.0",
+      "color": "#f07a1e",
+      "icon": "https://raw.githubusercontent.com/storytold/deckcraft/main/assets/app-icon/hicolor/128x128/apps/ai.storyteller.deckcraft.png",
+      "added": "2026-10-26",
+      "assets": {
+        "windows-x86_64": "deckcraft-*-windows-x64.msi",
+        "macos-x86_64": "deckcraft-*-macos-universal.dmg",
+        "macos-aarch64": "deckcraft-*-macos-universal.dmg",
+        "linux-x86_64": "deckcraft-*-linux-x86_64.AppImage",
+        "linux-aarch64": "deckcraft-*-linux-aarch64.AppImage",
+        "windows-aarch64": "deckcraft-*-windows-arm64.msi"
+      },
+      "bin": [
+        "deckcraft"
+      ],
+      "launch": {
+        "windows": "%ProgramFiles%\\DeckCraft\\deckcraft.exe",
+        "macos": "/Applications/DeckCraft.app"
+      }
+    },
+    {
+      "id": "gridcraft",
+      "name": "GridCraft",
+      "replaces": [
+        "Excel"
+      ],
+      "category": "office",
+      "kind": "gui",
+      "tagline": "Spreadsheets and data",
+      "description": "Formulas, charts and large sheets, with Excel files in and out.",
+      "repo": "storytold/gridcraft",
+      "homepage": "https://getartcraft.com/apps/gridcraft",
+      "license": "MIT OR Apache-2.0",
+      "color": "#1f9d55",
+      "icon": "https://raw.githubusercontent.com/storytold/gridcraft/main/assets/app-icon/hicolor/128x128/apps/ai.storyteller.gridcraft.png",
+      "added": "2026-10-26",
+      "assets": {
+        "windows-x86_64": "gridcraft-*-windows-x64.msi",
+        "macos-x86_64": "gridcraft-*-macos-universal.dmg",
+        "macos-aarch64": "gridcraft-*-macos-universal.dmg",
+        "linux-x86_64": "gridcraft-*-linux-x86_64.AppImage",
+        "linux-aarch64": "gridcraft-*-linux-aarch64.AppImage",
+        "windows-aarch64": "gridcraft-*-windows-arm64.msi"
+      },
+      "bin": [
+        "gridcraft"
+      ],
+      "launch": {
+        "windows": "%ProgramFiles%\\GridCraft\\gridcraft.exe",
+        "macos": "/Applications/GridCraft.app"
+      }
+    },
+    {
+      "id": "pdfcraft",
+      "name": "PdfCraft",
+      "replaces": [
+        "Acrobat"
+      ],
+      "category": "office",
+      "kind": "gui",
+      "tagline": "Read, organize and protect PDFs",
+      "description": "Read, combine, split, reorder and password-protect PDF files.",
+      "repo": "storytold/pdfcraft",
+      "homepage": "https://getartcraft.com/apps/pdfcraft",
+      "license": "MIT OR Apache-2.0",
+      "color": "#12a58a",
+      "icon": "https://raw.githubusercontent.com/storytold/pdfcraft/main/assets/app-icon/hicolor/128x128/apps/ai.storyteller.pdfcraft.png",
+      "added": "2026-10-26",
+      "assets": {
+        "windows-x86_64": "pdfcraft-*-windows-x64.msi",
+        "macos-x86_64": "pdfcraft-*-macos-universal.dmg",
+        "macos-aarch64": "pdfcraft-*-macos-universal.dmg",
+        "linux-x86_64": "pdfcraft-*-linux-x86_64.AppImage",
+        "linux-aarch64": "pdfcraft-*-linux-aarch64.AppImage",
+        "windows-aarch64": "pdfcraft-*-windows-arm64.msi"
+      },
+      "bin": [
+        "pdfcraft"
+      ],
+      "launch": {
+        "windows": "%ProgramFiles%\\PdfCraft\\pdfcraft.exe",
+        "macos": "/Applications/PdfCraft.app"
+      }
+    },
+    {
+      "id": "cadcraft",
+      "name": "CADCraft",
+      "replaces": [
+        "AutoCAD"
+      ],
+      "category": "engineering",
+      "kind": "gui",
+      "tagline": "Computer-aided design and drafting",
+      "description": "2D drafting with layers, dimensions and DWG/DXF files.",
+      "repo": "storytold/cadcraft",
+      "homepage": "https://getartcraft.com/apps/cadcraft",
+      "license": "MIT OR Apache-2.0",
+      "color": "#3ea6e8",
+      "icon": "https://raw.githubusercontent.com/storytold/cadcraft/main/assets/app-icon/hicolor/128x128/apps/ai.storyteller.cadcraft.png",
+      "added": "2026-10-26",
+      "assets": {
+        "windows-x86_64": "cadcraft-*-windows-x64.msi",
+        "macos-x86_64": "cadcraft-*-macos-universal.dmg",
+        "macos-aarch64": "cadcraft-*-macos-universal.dmg",
+        "linux-x86_64": "cadcraft-*-linux-x86_64.AppImage",
+        "linux-aarch64": "cadcraft-*-linux-aarch64.AppImage",
+        "windows-aarch64": "cadcraft-*-windows-arm64.msi"
+      },
+      "bin": [
+        "cadcraft"
+      ],
+      "launch": {
+        "windows": "%ProgramFiles%\\CADCraft\\cadcraft.exe",
+        "macos": "/Applications/CADCraft.app"
+      }
+    },
+    {
+      "id": "solidcraft",
+      "name": "SolidCraft",
+      "replaces": [
+        "SolidWorks",
+        "Fusion 360"
+      ],
+      "category": "engineering",
+      "kind": "gui",
+      "tagline": "Parametric 3D CAD",
+      "description": "Sketch, dimension and build 3D parts with an editable feature history, or drive it from an AI agent through MCP.",
+      "repo": "tangency-labs/solidcraft",
+      "homepage": "https://solidcraft.io",
+      "license": "MIT OR Apache-2.0",
+      "color": "#1f58b5",
+      "icon": "https://raw.githubusercontent.com/tangency-labs/solidcraft/main/assets/icons/app/linux/exports/hicolor/128x128/apps/io.tangencylabs.solidcraft.png",
+      "added": "2026-10-26",
+      "assets": {
+        "windows-x86_64": "solidcraft-*-windows-x64.msi",
+        "macos-x86_64": "solidcraft-*-macos-universal.dmg",
+        "macos-aarch64": "solidcraft-*-macos-universal.dmg",
+        "linux-x86_64": "solidcraft-*-linux-x86_64.AppImage",
+        "linux-aarch64": "solidcraft-*-linux-aarch64.AppImage",
+        "windows-aarch64": "solidcraft-*-windows-arm64.msi"
+      },
+      "bin": [
+        "solidcraft"
+      ],
+      "launch": {
+        "windows": "%ProgramFiles%\\SolidCraft\\solidcraft.exe",
+        "macos": "/Applications/SolidCraft.app"
+      }
+    },
+    {
+      "id": "bimcraft",
+      "name": "BIMCraft",
+      "replaces": [
+        "Revit"
+      ],
+      "category": "engineering",
+      "kind": "gui",
+      "tagline": "Building information modeling",
+      "description": "A clean-room take on the Revit workflow: model walls, floors and levels as real building elements, built to be driven by agents.",
+      "repo": "IPedrax/BIMCraft",
+      "license": "MIT OR Apache-2.0",
+      "color": "#b45309",
+      "icon": "https://raw.githubusercontent.com/IPedrax/BIMCraft/main/assets/app-icon/hicolor/128x128/apps/io.github.ipedrax.bimcraft.png",
+      "added": "2026-10-26",
+      "assets": {
+        "windows-x86_64": "bimcraft-*-windows-x64.msi",
+        "macos-x86_64": "bimcraft-*-macos-universal.dmg",
+        "macos-aarch64": "bimcraft-*-macos-universal.dmg",
+        "linux-x86_64": "bimcraft-*-linux-x86_64.AppImage",
+        "linux-aarch64": "bimcraft-*-linux-aarch64.AppImage"
+      },
+      "bin": [
+        "bimcraft"
+      ],
+      "launch": {
+        "windows": "%ProgramFiles%\\BIMCraft\\bimcraft.exe",
+        "macos": "/Applications/BIMCraft.app"
+      }
+    },
+    {
+      "id": "artcraft",
+      "name": "ArtCraft",
+      "replaces": [
+        "Midjourney",
+        "Runway"
+      ],
+      "category": "creative",
+      "kind": "gui",
+      "tagline": "AI image and video studio with real control",
+      "description": "Generate and edit images and video with AI, with layers, poses and 3D scenes to steer the result.",
+      "repo": "storytold/artcraft",
+      "homepage": "https://getartcraft.com",
+      "license": "Apache-2.0",
+      "color": "#111827",
+      "icon": "https://raw.githubusercontent.com/storytold/artcraft/main/frontend/apps/artcraft/app/public/resources/logo/artcraft-icon.png",
+      "added": "2026-10-26",
+      "assets": {
+        "windows-x86_64": "ArtCraft_*_x64_en-US.msi",
+        "macos-x86_64": "ArtCraft_*_universal.dmg",
+        "macos-aarch64": "ArtCraft_*_universal.dmg"
+      },
+      "launch": {
+        "windows": "%ProgramFiles%\\ArtCraft\\artcraft.exe",
+        "macos": "/Applications/ArtCraft.app"
+      }
+    },
+    {
+      "id": "rustdesk",
+      "name": "RustDesk",
+      "replaces": [
+        "TeamViewer",
+        "AnyDesk"
+      ],
+      "category": "utilities",
+      "kind": "gui",
+      "tagline": "Remote desktop you can self-host",
+      "description": "Remote access and support with end-to-end encryption, and the option to run your own relay server.",
+      "repo": "rustdesk/rustdesk",
+      "homepage": "https://rustdesk.com",
+      "license": "AGPL-3.0",
+      "color": "#0ea5e9",
+      "added": "2026-10-26",
+      "assets": {
+        "windows-x86_64": "rustdesk-*-x86_64.msi",
+        "windows-aarch64": "rustdesk-*-aarch64.msi",
+        "macos-x86_64": "rustdesk-*-x86_64.dmg",
+        "macos-aarch64": "rustdesk-*-aarch64.dmg",
+        "linux-x86_64": "rustdesk-*-x86_64.AppImage",
+        "linux-aarch64": "rustdesk-*-aarch64.AppImage"
+      },
+      "launch": {
+        "windows": "%ProgramFiles%\\RustDesk\\rustdesk.exe",
+        "macos": "/Applications/RustDesk.app"
+      },
+      "icon": "https://raw.githubusercontent.com/rustdesk/rustdesk/master/res/icon.png"
+    }
+  ]
+}
