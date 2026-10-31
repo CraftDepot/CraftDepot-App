@@ -252,33 +252,13 @@ variables, with `APPLE_API_KEY_PATH` pointing at the `.p8`) before running `scri
 
 **Windows (Microsoft Artifact Signing, formerly Trusted Signing).** No secrets: the workflow signs
 in to Azure with GitHub's OpenID Connect, which Azure trusts only from this repository's `release`
-environment.
-
-1. In the Azure portal, create an **Artifact Signing account** (the Basic tier is enough) and note
-   its endpoint, e.g. `https://eus.codesigning.azure.net/`.
-2. In the account, complete **identity validation** (Public), then create a **certificate profile**
-   of type Public Trust from it.
-3. In Microsoft Entra ID, register an app. Under Certificates & secrets → Federated credentials,
-   add one for GitHub Actions: organization `CraftDepot`, repository `CraftDepot-App`, entity type
-   **Environment**, name `release`.
-4. On the signing account, give that app the **Artifact Signing Certificate Profile Signer** role
-   (Access control → Add role assignment).
-5. In GitHub, create the environment `release` (Settings → Environments). Limit it to the `main`
-   branch and `v*` tags, so only reviewed code is signed.
-6. Add these repository variables:
-
-| Variable | Value |
-|---|---|
-| `AZURE_CLIENT_ID` | The app registration's Application (client) ID |
-| `AZURE_TENANT_ID` | Its Directory (tenant) ID |
-| `AZURE_SUBSCRIPTION_ID` | The subscription the signing account is in |
-| `ARTIFACT_SIGNING_ENDPOINT` | The endpoint from step 1 |
-| `ARTIFACT_SIGNING_ACCOUNT` | The signing account's name |
-| `ARTIFACT_SIGNING_PROFILE` | The certificate profile's name |
+environment. **[SIGNING.md](SIGNING.md) walks through it step by step**: the signing account,
+identity validation, the certificate profile, the app registration and its federated credential,
+the signer role, and the `release` environment and six repository variables.
 
 From then on, every run of the release workflow signs `craftdepot.exe` in both Windows zips,
-x86_64 and Arm, and checks each signature and timestamp before the zips are published. A run
-started by hand signs too, so you can try it before tagging.
+x86_64 and Arm, builds and signs the `.msi` installers, and checks each signature and timestamp
+before anything is published. A run started by hand signs too, so you can try it before tagging.
 
 ## Privacy
 
