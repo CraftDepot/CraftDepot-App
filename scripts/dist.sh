@@ -8,7 +8,7 @@
 #   scripts/dist.sh             this computer's platform
 #   scripts/dist.sh <target>    a specific Linux target, e.g. aarch64-unknown-linux-gnu
 #
-# To try the result the way a user would: CRAFTDEPOT_DIST="$PWD/dist" sh install/install.sh
+# To try the result the way a user would: CRAFTDEPOT_DIST="$PWD/dist" sh installer/install.sh
 #
 # On macOS, APPLE_SIGNING_IDENTITY ("Developer ID Application: …") signs the app with that
 # certificate instead of ad hoc, and APPLE_API_KEY_PATH, APPLE_API_KEY_ID and APPLE_API_ISSUER (an

@@ -215,13 +215,13 @@ Para compilar e testar um pacote localmente, do jeito que os usuários o recebem
 
 ```powershell
 ./scripts/dist.ps1                                   # Windows: dist/craftdepot-windows-<arch>.zip
-$env:CRAFTDEPOT_DIST = "$PWD\dist"; ./install/install.ps1
+$env:CRAFTDEPOT_DIST = "$PWD\dist"; ./installer/install.ps1
 # The .msi, with WiX 3 (https://github.com/wixtoolset/wix3) installed:
 ./scripts/msi.ps1 -Exe target/x86_64-pc-windows-msvc/release/craftdepot.exe -Arch x86_64
 ```
 ```sh
 sh scripts/dist.sh                                   # macOS or Linux
-CRAFTDEPOT_DIST="$PWD/dist" sh install/install.sh
+CRAFTDEPOT_DIST="$PWD/dist" sh installer/install.sh
 ```
 
 ### Assinatura
@@ -300,9 +300,8 @@ endereço IP, como em qualquer solicitação na web.
 catalog/         catalog.json and featured.json; check.mjs (CI runs it on every change); publish.mjs
                  and releases.mjs, which build what's published (catalog.json, releases.json)
 locales/         the launcher's text, one JSON file per language
-install/         install.ps1 and install.sh, the one-line installers
 telemetry/       the usage statistics endpoint (a Cloudflare Worker)
-installer/       craftdepot.wxs, the Windows .msi (WiX 3)
+installer/       install.ps1 and install.sh, the one-line installers; craftdepot.wxs, the .msi (WiX 3)
 scripts/         dist.ps1 and dist.sh, which build and package a release (dist.sh: the .dmg too);
                  msi.ps1, which packages the .msi
 src/index.rs     the release index: every app's latest release and stars, in one file

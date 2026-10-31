@@ -4,7 +4,7 @@
 #   pwsh scripts/dist.ps1                                  this computer's architecture
 #   pwsh scripts/dist.ps1 -Target aarch64-pc-windows-msvc  another one (needs its Rust target)
 #
-# To try the result the way a user would: $env:CRAFTDEPOT_DIST = "$PWD\dist"; ./install/install.ps1
+# To try the result the way a user would: $env:CRAFTDEPOT_DIST = "$PWD\dist"; ./installer/install.ps1
 
 param([string]$Target)
 

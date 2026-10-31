@@ -3,9 +3,9 @@ name: Catalog
 on:
   push:
     branches: [main]
-    paths: ["catalog/**", "install/**", ".github/workflows/catalog.yml"]
+    paths: ["catalog/**", "installer/**", ".github/workflows/catalog.yml"]
   pull_request:
-    paths: ["catalog/**", "install/**", ".github/workflows/catalog.yml"]
+    paths: ["catalog/**", "installer/**", ".github/workflows/catalog.yml"]
   schedule:
     # Hourly: rebuild releases.json, so launchers hear about new releases within the hour.
     - cron: "23 * * * *"
@@ -34,7 +34,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Lint the shell scripts
-        run: shellcheck install/install.sh scripts/dist.sh
+        run: shellcheck installer/install.sh scripts/dist.sh
 
   # Publishes to https://craftdepot.github.io/CraftDepot-App/: catalog.json (with featured.json merged in),
   # which every launcher polls; releases.json, every app's latest release and stars; and the
@@ -64,7 +64,7 @@ jobs:
         run: |
           mkdir _site
           node catalog/publish.mjs _site
-          cp install/install.ps1 install/install.sh _site/
+          cp installer/install.ps1 installer/install.sh _site/
       - name: Gather every app's latest release and stars
         run: node catalog/releases.mjs _site/releases.json
         env:
