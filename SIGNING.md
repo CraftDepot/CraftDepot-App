@@ -91,7 +91,7 @@ numeric IDs**, so that a repository deleted and recreated under the same name do
 trust:
 
 ```
-repo:CraftDepot@350790424/CraftDepot-App@1441080187:environment:release
+repo:CraftDepot@<owner ID>/CraftDepot-App@<repository ID>:environment:release
 ```
 
 Don't type it by hand. Ask GitHub for the repository's prefix and add `:environment:release`:
@@ -105,13 +105,13 @@ gh api repos/CraftDepot/CraftDepot-App/actions/oidc/customization/sub --jq .sub_
 > repository's tokens don't match. In the portal, pick **Other issuer** and paste the subject; or
 > use the CLI.
 
-Save this as `credential.json`, with your subject:
+Save this as `credential.json`, with the subject GitHub gave you:
 
 ```json
 {
   "name": "github-release-environment",
   "issuer": "https://token.actions.githubusercontent.com",
-  "subject": "repo:CraftDepot@350790424/CraftDepot-App@1441080187:environment:release",
+  "subject": "repo:CraftDepot@<owner ID>/CraftDepot-App@<repository ID>:environment:release",
   "audiences": ["api://AzureADTokenExchange"]
 }
 ```
@@ -188,20 +188,6 @@ Get-AuthenticodeSignature .\craftdepot.exe | Format-List Status, SignerCertifica
 
 `Status` should be `Valid`. In Explorer, the file's Properties → Digital Signatures tab shows the
 same.
-
-## This project's setup
-
-| | |
-|---|---|
-| Signing account | `craftcraft` (Basic), in resource group `craftcraft-signing`, West US |
-| Endpoint | `https://wus.codesigning.azure.net/` |
-| Certificate profile | `craftcraft`, Public Trust |
-| App registration | `craftcraft-release-signing` |
-| Federated credential subject | `repo:CraftDepot@350790424/CraftDepot-App@1441080187:environment:release` |
-
-The `craftcraft` names date from before the project was renamed. Azure can't rename a signing
-account or a profile, and the names never appear in the signed files. The IDs are in the repository
-variables.
 
 ## Moving to another repository
 
